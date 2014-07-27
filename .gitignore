@@ -1,0 +1,8 @@
+/bin
+.project
+.classpath
+.cache
+.settings
+/target
+/project/target
+*.kml
