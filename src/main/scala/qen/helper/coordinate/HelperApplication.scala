@@ -13,7 +13,6 @@ object HelperApplication extends App {
 //    val loginField = driver.findElement(By.id("txtLogin"));
 //    loginField.sendKeys("COFEINE");
 //    val passwordField = driver.findElement(By.id("txtPassword"));
-//    passwordField.sendKeys("s7t9i5x1");
 //    val loginButton = driver.findElement(By.xpath("//input[@type='submit']"));
 //    loginButton.click();
 //    println(driver.getCurrentUrl());
