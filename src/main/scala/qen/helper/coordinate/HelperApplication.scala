@@ -9,6 +9,7 @@ object HelperApplication extends App {
   override def main(args: Array[String]): Unit = {
     val configurationFilePath : String = args(0)
     val absoluteConfig: Config = ConfigFactory.parseFile(new File(configurationFilePath))
+    val dropBoxSyncronizer = new DropBoxSyncronizer(absoluteConfig)
     val engineAccessor : EngineAccessor = new EngineAccessor(
         absoluteConfig.getString("en.game.domain"),
         absoluteConfig.getString("en.game.id"),
@@ -19,7 +20,6 @@ object HelperApplication extends App {
     var currentLevel = engineAccessor.getCurrentLevelNumber;
     val coordinateParser = new CoordinateParser
     val kmlBuilder: KMLBuilder = new KMLBuilder
-    val dropBoxSyncronizer = new DropBoxSyncronizer(absoluteConfig)
     val kmlFileName = absoluteConfig.getString("kml.filename")
     dropBoxSyncronizer.refreshFile(kmlBuilder.buildKML(kmlFileName,0, List((42.98423,98.98234))))
     while (currentLevel<maximalLevel){
@@ -30,6 +30,7 @@ object HelperApplication extends App {
     	  engineAccessor.saveCurrentLevelContent
       }
       currentLevel = engineAccessor.getCurrentLevelNumber
+      Thread.sleep(1000)
     }
   }
 }

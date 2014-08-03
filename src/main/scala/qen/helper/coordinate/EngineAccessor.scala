@@ -15,7 +15,9 @@ class EngineAccessor (val domain: String, val gameId: String, val username: Stri
       val loginField = driver.findElement(By.id("txtLogin"));
       val passwordField = driver.findElement(By.id("txtPassword"));
       loginField.sendKeys(username);
+      Thread.sleep(1000)
       passwordField.sendKeys(password);
+      Thread.sleep(1000)
       val loginButton = driver.findElement(By.xpath("//input[@type='submit']"));
       loginButton.click();
       println("Login attempted. Must be entering the game.")

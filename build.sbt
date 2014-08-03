@@ -1,4 +1,22 @@
 // set the name of the project
+import AssemblyKeys._
+
+assemblySettings
+
+jarName in assembly := "CoordinateHelper.jar"
+
+mergeStrategy in assembly <<= (mergeStrategy in assembly) { (old) =>
+  {
+    case PathList("javax","xml", xs @ _*)         => MergeStrategy.first
+    case PathList(ps @ _*) if ps.last endsWith ".html" => MergeStrategy.first
+    case "application.conf" => MergeStrategy.concat
+    case "unwanted.txt"     => MergeStrategy.discard
+    case x => old(x)
+  }
+}
+
+mainClass in assembly := Some("qen.helper.coordinate.HelperApplication")
+
 name := "Coordinate Helper"
 
 version := "1.0"

@@ -21,7 +21,7 @@ class DropBoxSyncronizer(absoluteConfig: Config) {
     	val dropboxKMLFilePath = "/"+kmlFile.getName()
         val uploadedFile: DbxEntry.File = client.uploadFile(dropboxKMLFilePath,
         DbxWriteMode.force(), kmlFile.length(), inputStream);
-      println(client.createShareableUrl(dropboxKMLFilePath).replace("www.dropbox.com", "dl.dropboxusercontent.com"))
+      println("You access your file under "+client.createShareableUrl(dropboxKMLFilePath).replace("www.dropbox.com", "dl.dropboxusercontent.com"))
       println("Uploaded: " + uploadedFile.toString());
     } finally {
       inputStream.close();
