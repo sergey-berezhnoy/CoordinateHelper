@@ -16,21 +16,12 @@ object HelperApplication extends App {
         absoluteConfig.getString("en.user.login"),
         absoluteConfig.getString("en.user.password"));
     engineAccessor.enterCurrentGame();
-    val maximalLevel = engineAccessor.getMaximalLevelNumber;
     var currentLevel = engineAccessor.getCurrentLevelNumber;
     val coordinateParser = new CoordinateParser
     val kmlBuilder: KMLBuilder = new KMLBuilder
     val kmlFileName = absoluteConfig.getString("kml.filename")
-    dropBoxSyncronizer.refreshFile(kmlBuilder.buildKML(kmlFileName,0, List((42.98423,98.98234))))
-    while (currentLevel<maximalLevel){
-      engineAccessor.refreshCurrentLevel
-      if(engineAccessor.isCurrentLevelContentChanged){
-    	  val coordinateList = coordinateParser.getCoordinates(engineAccessor.getCurrentLevelContent)
-    	   dropBoxSyncronizer.refreshFile(kmlBuilder.buildKML(kmlFileName,currentLevel,coordinateList))
-    	  engineAccessor.saveCurrentLevelContent
-      }
-      currentLevel = engineAccessor.getCurrentLevelNumber
-      Thread.sleep(1000)
-    }
+    val coordinateList = coordinateParser.getCoordinates(engineAccessor.getCurrentLevelContent)
+    dropBoxSyncronizer.refreshFile(kmlBuilder.buildKML(kmlFileName,currentLevel,coordinateList))
+    engineAccessor.saveCurrentLevelContent
   }
 }
