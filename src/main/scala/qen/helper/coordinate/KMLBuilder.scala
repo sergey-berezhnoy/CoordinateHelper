@@ -6,12 +6,14 @@ import de.micromata.opengis.kml.v_2_2_0.Document
 import java.io.File
 
 class KMLBuilder() {
-  def buildKML(coordinateList: List[Tuple2[Double, Double]]): Boolean = {
+  def buildKML(fileName: String,levelNumber: Int,coordinateList: List[Tuple2[Double, Double]]): File = {
     val kml: Kml = KmlFactory.createKml();
-    val document: Document = kml.createAndSetDocument().withName("just a test");
+    val document: Document = kml.createAndSetDocument().withName(s"Level $levelNumber");
     coordinateList.foreach(x => {
-      document.createAndAddPlacemark().withName("just a layer").withOpen(true).createAndSetPoint().addToCoordinates(x._1, x._2)
+      document.createAndAddPlacemark().withName("point").withOpen(true).createAndSetPoint().addToCoordinates(x._1, x._2)
     })
-    kml.marshal(new File("HelloKml.kml"));
+    val kmlFile = new File(s"$fileName.kml")
+    kml.marshal(kmlFile);
+    return kmlFile;
   }
 }

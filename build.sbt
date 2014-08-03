@@ -14,7 +14,8 @@ libraryDependencies ++= Seq(
 "org.seleniumhq.selenium" % "selenium-java" % "2.42.2" % "compile",
 "org.scalatest" % "scalatest_2.11" % "2.2.0" % "test",
 "de.micromata.jak" % "JavaAPIforKml" % "2.2.0",
-"com.typesafe" % "config" % "1.2.1"
+"com.typesafe" % "config" % "1.2.1",
+"com.dropbox.core" % "dropbox-core-sdk" % "[1.7,1.8)"
 )
 
 resolvers += "Java.net Maven 2 Repository" at "http://download.java.net/maven/2"

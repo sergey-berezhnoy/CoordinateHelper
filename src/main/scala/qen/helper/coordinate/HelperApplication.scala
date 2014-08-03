@@ -1,11 +1,8 @@
 package qen.helper.coordinate
 
 import java.io.File
-import de.micromata.opengis.kml.v_2_2_0.Kml
-import scala.io.Source
+
 import com.typesafe.config._
-import de.micromata.opengis.kml.v_2_2_0.KmlFactory
-import de.micromata.opengis.kml.v_2_2_0.Document
 
 
 object HelperApplication extends App {
@@ -22,11 +19,14 @@ object HelperApplication extends App {
     var currentLevel = engineAccessor.getCurrentLevelNumber;
     val coordinateParser = new CoordinateParser
     val kmlBuilder: KMLBuilder = new KMLBuilder
+    val dropBoxSyncronizer = new DropBoxSyncronizer(absoluteConfig)
+    val kmlFileName = absoluteConfig.getString("kml.filename")
+    dropBoxSyncronizer.refreshFile(kmlBuilder.buildKML(kmlFileName,0, List((42.98423,98.98234))))
     while (currentLevel<maximalLevel){
       engineAccessor.refreshCurrentLevel
       if(engineAccessor.isCurrentLevelContentChanged){
     	  val coordinateList = coordinateParser.getCoordinates(engineAccessor.getCurrentLevelContent)
-    	  kmlBuilder.buildKML(coordinateList)
+    	   dropBoxSyncronizer.refreshFile(kmlBuilder.buildKML(kmlFileName,currentLevel,coordinateList))
     	  engineAccessor.saveCurrentLevelContent
       }
       currentLevel = engineAccessor.getCurrentLevelNumber
