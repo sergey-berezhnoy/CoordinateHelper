@@ -12,14 +12,24 @@ object HelperApplication extends App {
   override def main(args: Array[String]): Unit = {
     val configurationFilePath : String = args(0)
     val absoluteConfig: Config = ConfigFactory.parseFile(new File(configurationFilePath))
-    println(absoluteConfig.getString("kml"))
     val engineAccessor : EngineAccessor = new EngineAccessor(
         absoluteConfig.getString("en.game.domain"),
         absoluteConfig.getString("en.game.id"),
         absoluteConfig.getString("en.user.login"),
         absoluteConfig.getString("en.user.password"));
-    val levelText : String = engineAccessor.enterCurrentGame();
-    val coordinateList = new CoordinateParser(levelText).getCoordinates
-    new KMLBuilder(coordinateList).buildKML;
+    engineAccessor.enterCurrentGame();
+    val maximalLevel = engineAccessor.getMaximalLevelNumber;
+    var currentLevel = engineAccessor.getCurrentLevelNumber;
+    val coordinateParser = new CoordinateParser
+    val kmlBuilder: KMLBuilder = new KMLBuilder
+    while (currentLevel<maximalLevel){
+      engineAccessor.refreshCurrentLevel
+      if(engineAccessor.isCurrentLevelContentChanged){
+    	  val coordinateList = coordinateParser.getCoordinates(engineAccessor.getCurrentLevelContent)
+    	  kmlBuilder.buildKML(coordinateList)
+    	  engineAccessor.saveCurrentLevelContent
+      }
+      currentLevel = engineAccessor.getCurrentLevelNumber
+    }
   }
 }
